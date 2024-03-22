@@ -6,8 +6,10 @@ from sklearn.datasets import fetch_california_housing
 
 
 def to_df(dataset):
-    return pd.DataFrame(data=np.c_[dataset['data'], dataset['target']],
-                        columns=dataset['feature_names'] + ['target'])
+    return pd.DataFrame(
+        data=np.c_[dataset["data"], dataset["target"]],
+        columns=dataset["feature_names"] + ["target"],
+    )
 
 
 def load_dataset(dataset_name: str):
@@ -20,14 +22,20 @@ def load_dataset(dataset_name: str):
     elif dataset_name == "iris":
         dataset = sklearn.datasets.load_iris()
         dataset = to_df(dataset)
-    elif dataset_name == 'titanic':
+        dataset["target"] = dataset["target"].astype(int)
+    elif dataset_name == "titanic":
         dataset = seaborn.load_dataset("titanic")
         # Replace 'survived' column with 'target' for consistency
-        dataset['target'] = dataset['survived']
-        dataset = dataset.drop(columns=['survived'])
+        dataset["target"] = dataset["survived"]
+        dataset = dataset.drop(columns=["survived"])
+        dataset["target"] = dataset["target"].astype(int)
     elif dataset_name == "wine":
         dataset = sklearn.datasets.load_wine()
         dataset = to_df(dataset)
+        dataset["target"] = dataset["target"].astype(int)
     else:
         raise NotImplementedError(f"Dataset {dataset_name} not implemented.")
-    return dataset
+
+    X = dataset.drop(columns=["target"])
+    y = dataset["target"]
+    return X, y
