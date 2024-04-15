@@ -1,4 +1,4 @@
-# EARIN 2024 Lab3: Regression and classification
+# EARIN 2024 Lab4: Regression and classification
 
 ## Repo setup
 
